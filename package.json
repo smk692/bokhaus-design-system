@@ -1,0 +1,56 @@
+{
+  "name": "@sonmily/design-system",
+  "version": "0.4.0",
+  "description": "손밀리 기업 디자인 시스템 - BOKHAUS 시니어 UX 우선",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build:tokens": "style-dictionary build --config config/style-dictionary.config.js",
+    "watch:tokens": "nodemon --watch tokens --exec npm run build:tokens",
+    "build": "npm run build:tokens && tsc",
+    "watch": "tsc --watch",
+    "clean": "rm -rf build/ dist/",
+    "prebuild": "npm run clean",
+    "test": "jest",
+    "postinstall": "npm run build:tokens",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "react-native-paper": "^5.12.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@react-native-community/datetimepicker": "^9.1.0",
+    "@storybook/addon-a11y": "^10.3.2",
+    "@storybook/addon-actions": "^9.0.8",
+    "@storybook/addon-essentials": "^8.6.18",
+    "@storybook/addon-interactions": "^8.6.14",
+    "@storybook/addon-links": "^8.6.18",
+    "@storybook/react": "^8.6.18",
+    "@storybook/react-webpack5": "^8.6.18",
+    "@types/react": "^18.2.0",
+    "@types/react-native": "^0.72.0",
+    "babel-loader": "^10.1.1",
+    "nodemon": "^3.0.0",
+    "react-dom": "^19.2.4",
+    "react-native-safe-area-context": "^5.7.0",
+    "react-native-web": "^0.19.13",
+    "storybook": "^8.6.18",
+    "style-dictionary": "^3.9.0",
+    "typescript": "^5.3.0"
+  },
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "react-native",
+    "bokhaus",
+    "senior-ux",
+    "accessibility"
+  ],
+  "author": "CTO, Sonmily Corp",
+  "license": "MIT"
+}
