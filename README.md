@@ -1,15 +1,8 @@
 # 손밀리 기업 통합 디자인 시스템
 
-## 📚 Storybook (Live Demo)
-**🚀 [https://smk692.github.io/bokhaus-design-system/](https://smk692.github.io/bokhaus-design-system/)**
-
-React Native 컴포넌트 라이브러리 미리보기, 인터랙티브 데모, 접근성 검사
-
----
-
 ## 프로젝트 개요
 - **목표**: 손밀리 기업 전체 제품의 일관된 디자인 언어 수립
-- **버전**: v0.4.0 (Phase 1~4 완료)
+- **기간**: 4주 (Phase 1)
 - **적용 대상**: BOKHAUS, 출퇴근앱, 청첩장
 - **주도**: CPO (UX/디자인 의사결정) + CTO (기술 구현)
 

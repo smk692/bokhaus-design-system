@@ -1,89 +1,103 @@
 /**
- * List / ListItem Stories
+ * List Storybook Stories
+ * CSF 3.0 format for Storybook 7+
  */
 
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { View } from 'react-native';
 import { List, ListItem } from './List';
+import { Avatar } from '../Avatar/Avatar';
+import { Badge } from '../Badge/Badge';
+import Typography from '../Typography/Typography';
 
-export default {
+const meta: Meta<typeof ListItem> = {
   title: 'Components/List',
-  component: List,
-  decorators: [
-    (Story: React.FC) => (
-      <PaperProvider>
-        <View style={styles.container}>
-          <Story />
-        </View>
-      </PaperProvider>
-    ),
-  ],
-};
-
-// 기본 리스트 (BOKHAUS 건강 기록)
-export const HealthRecordList = () => (
-  <List
-    data={[
-      { title: '혈압 측정', subtitle: '오전 8:02 · 120/80 mmHg', icon: 'heart-pulse' },
-      { title: '혈당 측정', subtitle: '오전 8:15 · 95 mg/dL', icon: 'water' },
-      { title: '체중 측정', subtitle: '오전 8:20 · 62.3 kg', icon: 'scale-bathroom' },
-      { title: '복약 기록', subtitle: '오전 8:30 · 3종', icon: 'pill' },
-    ]}
-    sectionTitle="오늘의 건강 기록"
-    renderItem={(item) => (
-      <ListItem
-        title={item.title}
-        subtitle={item.subtitle}
-        leftIcon={item.icon}
-        showChevron
-        onPress={() => console.log(item.title)}
-      />
-    )}
-  />
-);
-
-// 설정 리스트 (with Switch)
-export const SettingsList = () => {
-  const [notifications, setNotifications] = React.useState(true);
-  return (
-    <List
-      data={[
-        { title: '복약 알림', subtitle: '매일 오전 8시', key: 'medication' },
-        { title: '혈압 측정 알림', subtitle: '매일 오전 7시 30분', key: 'bp' },
-        { title: '주간 보고서', subtitle: '매주 월요일', key: 'report' },
-      ]}
-      sectionTitle="알림 설정"
-      renderItem={(item) => (
-        <ListItem
-          title={item.title}
-          subtitle={item.subtitle}
-          leftIcon="bell-outline"
-          rightElement={
-            <View style={{ justifyContent: 'center' }}>
-              {/* Switch 컴포넌트 (Phase 4 Form) */}
-            </View>
-          }
-        />
-      )}
-    />
-  );
-};
-
-// 빈 목록
-export const EmptyList = () => (
-  <List
-    data={[]}
-    renderItem={(item) => <ListItem title={item as string} />}
-    emptyText="아직 기록이 없습니다"
-    sectionTitle="이번 달 기록"
-  />
-);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#F5F5F5',
+  component: ListItem,
+  tags: ['autodocs'],
+  argTypes: {
+    title: { control: 'text', description: '메인 텍스트' },
+    subtitle: { control: 'text', description: '보조 텍스트' },
+    leftIcon: { control: 'text', description: '왼쪽 아이콘' },
+    showChevron: { control: 'boolean', description: '오른쪽 화살표' },
+    showDivider: { control: 'boolean', description: '구분선' },
   },
-});
+};
+
+export default meta;
+type Story = StoryObj<typeof ListItem>;
+
+export const Default: Story = {
+  args: {
+    title: '홍길동',
+    subtitle: '오늘 오후 2시 방문 예정',
+    showChevron: true,
+  },
+};
+
+export const WithIcon: Story = {
+  render: () => (
+    <View style={{ maxWidth: 400 }}>
+      <ListItem title="건강 체크" subtitle="오늘 오전 10시" leftIcon="heart-pulse" showChevron />
+      <ListItem title="투약 관리" subtitle="아침 복용 완료" leftIcon="pill" showChevron />
+      <ListItem title="응급 연락처" subtitle="박케어 매니저" leftIcon="phone" showChevron />
+    </View>
+  ),
+};
+
+export const WithAvatar: Story = {
+  render: () => (
+    <View style={{ maxWidth: 400 }}>
+      <ListItem
+        title="김할머니"
+        subtitle="302호 · 오늘 방문 완료"
+        leftElement={<Avatar name="김할머니" size="medium" />}
+        rightElement={<Badge variant="label" label="정상" color="success" />}
+        showChevron
+      />
+      <ListItem
+        title="이할아버지"
+        subtitle="205호 · 방문 예정"
+        leftElement={<Avatar name="이할아버지" size="medium" />}
+        rightElement={<Badge variant="dot" color="warning" />}
+        showChevron
+      />
+    </View>
+  ),
+};
+
+export const BOKHAUSResidentList: Story = {
+  render: () => {
+    const residents = [
+      { name: '김순자', room: '101호', status: '정상', statusColor: 'success' as const },
+      { name: '이봉수', room: '203호', status: '주의', statusColor: 'warning' as const },
+      { name: '박영희', room: '305호', status: '정상', statusColor: 'success' as const },
+    ];
+    return (
+      <View style={{ maxWidth: 400 }}>
+        <Typography variant="heading3" style={{ padding: 16 }}>입소자 현황</Typography>
+        <List
+          data={residents}
+          keyExtractor={(item) => item.room}
+          renderItem={({ item }) => (
+            <ListItem
+              title={item.name}
+              subtitle={item.room}
+              leftElement={<Avatar name={item.name} size="medium" />}
+              rightElement={<Badge variant="label" label={item.status} color={item.statusColor} />}
+              showChevron
+              onPress={() => {}}
+            />
+          )}
+        />
+      </View>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'BOKHAUS 기관 어드민 입소자 목록. 72px 행 높이, 큰 터치 영역.',
+      },
+    },
+  },
+};

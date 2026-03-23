@@ -1,99 +1,111 @@
 /**
- * Modal/Dialog Stories - 손밀리 디자인 시스템
+ * Modal Storybook Stories
+ * CSF 3.0 format for Storybook 7+
  */
 
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { View } from 'react-native';
 import { Modal } from './Modal';
 import { Button } from '../Button/Button';
-import { Typography } from '../Typography/Typography';
+import Typography from '../Typography/Typography';
 
-export default {
+const meta: Meta<typeof Modal> = {
   title: 'Components/Modal',
   component: Modal,
-  decorators: [
-    (Story: React.FC) => (
-      <PaperProvider>
-        <View style={styles.container}>
-          <Story />
-        </View>
-      </PaperProvider>
-    ),
-  ],
+  tags: ['autodocs'],
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['alert', 'confirm', 'custom'],
+      description: '모달 타입',
+    },
+    title: { control: 'text', description: '제목' },
+    confirmLabel: { control: 'text', description: '확인 버튼 레이블' },
+    cancelLabel: { control: 'text', description: '취소 버튼 레이블' },
+    dismissOnBackdrop: { control: 'boolean', description: '배경 클릭 닫기' },
+  },
 };
 
-// Alert (정보)
-export const AlertModal = () => {
+export default meta;
+type Story = StoryObj<typeof Modal>;
+
+const ModalDemo = (props: any) => {
   const [visible, setVisible] = useState(false);
   return (
-    <>
-      <Button onPress={() => setVisible(true)}>Alert 열기</Button>
+    <View style={{ padding: 16 }}>
+      <Button onPress={() => setVisible(true)}>Modal 열기</Button>
       <Modal
+        {...props}
         visible={visible}
         onDismiss={() => setVisible(false)}
-        variant="alert"
-        title="복약 알림"
-        content="오전 8시 약을 아직 복용하지 않으셨습니다. 지금 복용하시겠습니까?"
-        confirmLabel="확인"
         onConfirm={() => setVisible(false)}
-      />
-    </>
-  );
-};
-
-// Confirm (확인/취소)
-export const ConfirmModal = () => {
-  const [visible, setVisible] = useState(false);
-  return (
-    <>
-      <Button onPress={() => setVisible(true)}>Confirm 열기</Button>
-      <Modal
-        visible={visible}
-        onDismiss={() => setVisible(false)}
-        variant="confirm"
-        title="기록 삭제"
-        content="이 건강 기록을 삭제하시겠습니까? 삭제된 데이터는 복구할 수 없습니다."
-        confirmLabel="삭제"
-        cancelLabel="취소"
-        onConfirm={() => { alert('삭제됨'); setVisible(false); }}
         onCancel={() => setVisible(false)}
       />
-    </>
+    </View>
   );
 };
 
-// Custom (자유 구성)
-export const CustomModal = () => {
-  const [visible, setVisible] = useState(false);
-  return (
-    <>
-      <Button onPress={() => setVisible(true)}>Custom 열기</Button>
-      <Modal
-        visible={visible}
-        onDismiss={() => setVisible(false)}
-        variant="custom"
-        title="긴급 연락"
-        content={
-          <View>
-            <Typography variant="bodyLarge">보호자에게 알림을 보내시겠습니까?</Typography>
-            <Typography variant="body" color="secondary">홍길동 (딸) · 010-1234-5678</Typography>
-          </View>
-        }
-        actions={[
-          { label: '취소', variant: 'text', onPress: () => setVisible(false) },
-          { label: '전화하기', variant: 'outlined', onPress: () => setVisible(false) },
-          { label: '문자 보내기', variant: 'filled', onPress: () => setVisible(false) },
-        ]}
-      />
-    </>
-  );
+export const Alert: Story = {
+  render: () => (
+    <ModalDemo
+      variant="alert"
+      title="알림"
+      content="건강 체크가 완료되었습니다."
+      confirmLabel="확인"
+    />
+  ),
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    gap: 16,
+export const Confirm: Story = {
+  render: () => (
+    <ModalDemo
+      variant="confirm"
+      title="로그아웃"
+      content="로그아웃 하시겠습니까?"
+      confirmLabel="로그아웃"
+      cancelLabel="취소"
+    />
+  ),
+};
+
+export const DestructiveConfirm: Story = {
+  render: () => (
+    <ModalDemo
+      variant="confirm"
+      title="계정 삭제"
+      content="계정을 삭제하면 모든 데이터가 영구적으로 삭제됩니다."
+      confirmLabel="삭제"
+      cancelLabel="취소"
+    />
+  ),
+};
+
+export const BOKHAUSEmergency: Story = {
+  render: () => (
+    <ModalDemo
+      variant="confirm"
+      title="🚨 긴급 알림"
+      content={
+        <View style={{ gap: 8 }}>
+          <Typography variant="bodyLarge" color="error">
+            혈압이 위험 수치를 초과했습니다.
+          </Typography>
+          <Typography variant="body">
+            즉시 보호자에게 연락하시겠습니까?
+          </Typography>
+        </View>
+      }
+      confirmLabel="보호자 연락"
+      cancelLabel="나중에"
+      dismissOnBackdrop={false}
+    />
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'BOKHAUS 긴급 상황 모달. 배경 클릭 닫기 비활성, 시니어 명확한 액션.',
+      },
+    },
   },
-});
+};
