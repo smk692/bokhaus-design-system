@@ -164,12 +164,12 @@
     },
     "fontFamily": {
       "primary": {
-        "value": "Noto Sans KR",
+        "value": "Gowun Dodum",
         "type": "fontFamilies",
-        "description": "Primary - 한국어 본문"
+        "description": "Primary - 시니어 UX 최적화 한국어 폰트 (Google Fonts)"
       },
       "fallback": {
-        "value": "Apple SD Gothic Neo, Malgun Gothic, sans-serif",
+        "value": "Noto Sans KR, Apple SD Gothic Neo, Malgun Gothic, sans-serif",
         "type": "fontFamilies",
         "description": "Fallback chain"
       }
