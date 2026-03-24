@@ -1,0 +1,16 @@
+# 디자인 시스템 CODEOWNERS
+# 모든 PR은 CTO + CPO 양쪽 리뷰 필요
+
+# 기본: 모든 파일 — 둘 다 봐야 함
+* @smk692
+
+# 컴포넌트 구현 — CTO 주 담당
+/components/ @smk692
+
+# 디자인 토큰 — CPO 주 담당
+/tokens/ @smk692
+
+# 문서/스펙 — CPO 주 담당
+/docs/ @smk692
+/specs/ @smk692
+*.md @smk692
