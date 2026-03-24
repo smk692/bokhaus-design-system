@@ -1,4 +1,5 @@
 import { Provider as PaperProvider } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View } from 'react-native';
 
 /** @type { import('@storybook/react').Preview } */
@@ -31,11 +32,13 @@ const preview = {
   },
   decorators: [
     (Story) => (
-      <PaperProvider>
-        <View style={{ padding: 20 }}>
-          <Story />
-        </View>
-      </PaperProvider>
+      <SafeAreaProvider>
+        <PaperProvider>
+          <View style={{ padding: 20 }}>
+            <Story />
+          </View>
+        </PaperProvider>
+      </SafeAreaProvider>
     ),
   ],
 };

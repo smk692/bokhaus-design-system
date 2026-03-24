@@ -26,6 +26,11 @@ const config = {
         __dirname,
         '../__mocks__/safe-area-context-mock.js'
       ),
+      // DateTimePicker mock for web
+      '@react-native-community/datetimepicker': path.resolve(
+        __dirname,
+        '../__mocks__/datetimepicker-mock.js'
+      ),
       // Vector icons mocks
       'react-native-vector-icons/MaterialCommunityIcons': mockIconPath,
       '@expo/vector-icons/MaterialCommunityIcons': mockIconPath,
