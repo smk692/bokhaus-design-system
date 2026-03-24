@@ -13,7 +13,7 @@
     "prebuild": "npm run clean",
     "test": "jest",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "build-storybook": "storybook build && node scripts/fix-viewport.js",
     "postinstall": "npm run build:tokens"
   },
   "dependencies": {
