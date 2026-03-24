@@ -2,8 +2,8 @@
   "name": "@sonmily/design-system",
   "version": "1.0.0",
   "description": "손밀리 기업 디자인 시스템 - BOKHAUS 시니어 UX 우선",
-  "main": "index.ts",
-  "types": "index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build:tokens": "style-dictionary build --config config/style-dictionary.config.js",
     "watch:tokens": "nodemon --watch tokens --exec npm run build:tokens",
