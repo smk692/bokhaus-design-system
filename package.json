@@ -1,9 +1,9 @@
 {
   "name": "@sonmily/design-system",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "description": "손밀리 기업 디자인 시스템 - BOKHAUS 시니어 UX 우선",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.ts",
+  "types": "index.ts",
   "scripts": {
     "build:tokens": "style-dictionary build --config config/style-dictionary.config.js",
     "watch:tokens": "nodemon --watch tokens --exec npm run build:tokens",
@@ -12,6 +12,8 @@
     "clean": "rm -rf build/ dist/",
     "prebuild": "npm run clean",
     "test": "jest",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "postinstall": "npm run build:tokens"
   },
   "dependencies": {
@@ -33,5 +35,12 @@
     "accessibility"
   ],
   "author": "CTO, Sonmily Corp",
-  "license": "MIT"
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "react-native": "./index.ts",
+      "default": "./dist/index.js",
+      "types": "./index.ts"
+    }
+  }
 }
