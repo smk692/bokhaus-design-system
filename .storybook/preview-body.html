@@ -1,0 +1,10 @@
+<script>
+  // 시니어 UX: Viewport meta tag 수정 (WCAG AAA)
+  // 페이지 로드 시 기본 viewport 태그를 수정
+  (function() {
+    const viewportMeta = document.querySelector('meta[name="viewport"]');
+    if (viewportMeta) {
+      viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes');
+    }
+  })();
+</script>
