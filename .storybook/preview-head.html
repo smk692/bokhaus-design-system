@@ -1,11 +1,35 @@
-<!-- Viewport Meta Tag: 시니어 UX — 확대/축소 허용 (WCAG AAA) -->
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
-
 <!-- Google Fonts: BOKHAUS 디자인 시스템 -->
 <!-- Gowun Dodum — 시니어 UX, 둥글고 따뜻한 한국어 폰트 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- 시니어 UX: Viewport meta tag 수정 (WCAG AAA) -->
+<script>
+  // DOM 로드 전에 즉시 실행
+  (function() {
+    // MutationObserver로 viewport meta 태그 감지 및 수정
+    const observer = new MutationObserver(function(mutations) {
+      const viewportMeta = document.querySelector('meta[name="viewport"]');
+      if (viewportMeta && viewportMeta.getAttribute('content') !== 'width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes') {
+        viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes');
+        console.log('[BOKHAUS] Viewport meta tag updated for senior UX (WCAG AAA)');
+      }
+    });
+    
+    // head 요소 감시 시작
+    if (document.head) {
+      observer.observe(document.head, { childList: true, subtree: true });
+      
+      // 즉시 한 번 실행
+      const viewportMeta = document.querySelector('meta[name="viewport"]');
+      if (viewportMeta) {
+        viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes');
+        console.log('[BOKHAUS] Viewport meta tag updated immediately');
+      }
+    }
+  })();
+</script>
 
 <style>
   /* Storybook 프리뷰 영역 전체에 Gowun Dodum 적용 */
