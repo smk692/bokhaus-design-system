@@ -1,48 +1,53 @@
 #!/usr/bin/env node
 /**
  * 시니어 UX: Viewport Meta Tag 수정 스크립트
- * Storybook 빌드 후 HTML 파일의 viewport 메타 태그를 WCAG AAA 준수로 수정
- * 
- * WCAG 2.1 SC 1.4.4: maximum-scale 제한 없어야 함
- * - maximum-scale는 설정하지 않음 (무제한 확대)
- * - user-scalable=yes 명시
+ * Storybook 빌드 후 모든 HTML 파일의 viewport 메타 태그를 WCAG AAA 준수로 수정
  */
 
 const fs = require('fs');
 const path = require('path');
 
 const STORYBOOK_STATIC = path.join(__dirname, '../storybook-static');
-const HTML_FILE = path.join(STORYBOOK_STATIC, 'iframe.html');
-
-// viewport 메타 태그 수정
-const OLD_VIEWPORT = 'width=device-width,initial-scale=1';
 const NEW_VIEWPORT = 'width=device-width, initial-scale=1, user-scalable=yes';
 
-if (fs.existsSync(HTML_FILE)) {
-  let html = fs.readFileSync(HTML_FILE, 'utf8');
+const htmlFiles = ['iframe.html', 'index.html'];
+
+htmlFiles.forEach((filename) => {
+  const filePath = path.join(STORYBOOK_STATIC, filename);
   
-  // 정규식으로 viewport 메타 태그 찾아서 수정
-  const viewportRegex = /<meta name="viewport" content="([^"]+)">/g;
+  if (!fs.existsSync(filePath)) {
+    console.log(`[BOKHAUS] ⚠️  ${filename} not found, skipping`);
+    return;
+  }
+
+  let html = fs.readFileSync(filePath, 'utf8');
+  
+  // 모든 viewport 메타 태그를 수정
+  const viewportRegex = /<meta\s+name="viewport"\s+content="[^"]*"[^>]*>/gi;
   const matches = html.match(viewportRegex);
   
   if (matches && matches.length > 0) {
-    console.log(`[BOKHAUS] Found ${matches.length} viewport meta tag(s)`);
+    console.log(`[BOKHAUS] ${filename}: Found ${matches.length} viewport meta tag(s)`);
+    matches.forEach((m, i) => console.log(`  [${i}] ${m}`));
     
-    // 첫 번째 viewport 태그만 수정 (Webpack 생성)
-    html = html.replace(
-      /<meta name="viewport" content="[^"]+">/, 
-      `<meta name="viewport" content="${NEW_VIEWPORT}">`
-    );
+    // 모든 viewport 태그를 수정
+    html = html.replace(viewportRegex, `<meta name="viewport" content="${NEW_VIEWPORT}">`);
     
-    fs.writeFileSync(HTML_FILE, html, 'utf8');
-    console.log('[BOKHAUS] ✅ Viewport meta tag updated for senior UX (WCAG 2.1 SC 1.4.4)');
-    console.log(`[BOKHAUS]    Old: ${OLD_VIEWPORT}`);
-    console.log(`[BOKHAUS]    New: ${NEW_VIEWPORT}`);
-    console.log('[BOKHAUS]    Note: maximum-scale removed (unlimited zooming allowed)');
+    // 중복 viewport 태그 제거 (첫 번째만 유지)
+    let firstFound = false;
+    html = html.replace(/<meta name="viewport" content="[^"]*">/gi, (match) => {
+      if (!firstFound) {
+        firstFound = true;
+        return `<meta name="viewport" content="${NEW_VIEWPORT}">`;
+      }
+      return ''; // 중복 제거
+    });
+    
+    fs.writeFileSync(filePath, html, 'utf8');
+    console.log(`[BOKHAUS] ✅ ${filename} updated`);
   } else {
-    console.log('[BOKHAUS] ⚠️  No viewport meta tag found');
+    console.log(`[BOKHAUS] ℹ️  ${filename}: No viewport meta tag found`);
   }
-} else {
-  console.error('[BOKHAUS] ❌ iframe.html not found in storybook-static/');
-  process.exit(1);
-}
+});
+
+console.log(`[BOKHAUS] ✅ All viewport meta tags set to: ${NEW_VIEWPORT}`);
