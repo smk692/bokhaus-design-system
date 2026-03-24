@@ -198,3 +198,25 @@ npm run build-storybook
 ---
 
 *문의: CPO (프로덕트/UX), CTO (기술/빌드)*
+
+---
+
+## 컴포넌트 카운팅 기준 (2026-03-24 확정)
+
+- **컴포넌트 1개 = `components/` 하위 1depth 디렉토리 1개**
+- 하위 variant 파일은 별도 카운팅 금지
+  - 예: `Progress/ProgressBar.tsx`, `Progress/Spinner.tsx`, `Progress/Skeleton.tsx` → **"Progress 1개"**
+  - 예: `DatePicker/Calendar.tsx`, `DatePicker/DateRangePicker.tsx` → **"DatePicker 1개"**
+- Phase 완료 보고 시 `find components/ -maxdepth 1 -type d | tail -n +2 | wc -l` 실행 결과 첨부 필수
+
+## Phase 완료 체크리스트
+
+- [ ] 실제 디렉토리 수 = 보고 숫자 (위 커맨드로 확인)
+- [ ] 테스트 있는 컴포넌트 목록 명시 (`find components/ -name "*.test.tsx"`)
+- [ ] GitHub push 및 CI 통과 확인
+- [ ] 비서(OpenClaw) 교차 검증 완료
+
+## shared-memory 사용 정책
+
+✅ 허용: decisions.md, PROGRESS.md, daily/ 로그, 회의록  
+❌ 금지: 전체 코드베이스, node_modules/, 빌드 결과물

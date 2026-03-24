@@ -1,0 +1,60 @@
+{
+  "color": {
+    "background": {
+      "primary":   { "value": "{color.neutral.0}",   "type": "color" },
+      "secondary": { "value": "{color.neutral.50}",  "type": "color" },
+      "tertiary":  { "value": "{color.neutral.100}", "type": "color" },
+      "inverse":   { "value": "{color.neutral.900}", "type": "color" }
+    },
+    "text": {
+      "primary":   { "value": "{color.neutral.900}", "type": "color" },
+      "secondary": { "value": "{color.neutral.600}", "type": "color" },
+      "disabled":  { "value": "{color.neutral.400}", "type": "color" },
+      "inverse":   { "value": "{color.neutral.0}",   "type": "color" },
+      "link":      { "value": "{color.primary.700}", "type": "color" }
+    },
+    "action": {
+      "primary":          { "value": "{color.primary.500}",  "type": "color" },
+      "primaryHover":     { "value": "{color.primary.700}",  "type": "color" },
+      "primaryDisabled":  { "value": "{color.neutral.200}",  "type": "color" }
+    },
+    "border": {
+      "default":  { "value": "{color.neutral.200}", "type": "color" },
+      "focus":    { "value": "{color.primary.500}", "type": "color" },
+      "error":    { "value": "{color.error}",       "type": "color" }
+    },
+    "feedback": {
+      "error":   { "value": "{color.error}",   "type": "color" },
+      "warning": { "value": "{color.warning}", "type": "color" },
+      "success": { "value": "{color.success}", "type": "color" },
+      "info":    { "value": "{color.info}",    "type": "color" }
+    }
+  },
+  "typography": {
+    "heading": {
+      "large":  { "value": { "fontSize": "{typography.fontSize.3xl}", "fontWeight": "{typography.fontWeight.bold}",    "lineHeight": "{typography.lineHeight.tight}"  }, "type": "typography" },
+      "medium": { "value": { "fontSize": "{typography.fontSize.2xl}", "fontWeight": "{typography.fontWeight.bold}",    "lineHeight": "{typography.lineHeight.tight}"  }, "type": "typography" },
+      "small":  { "value": { "fontSize": "{typography.fontSize.xl}",  "fontWeight": "{typography.fontWeight.medium}", "lineHeight": "{typography.lineHeight.normal}" }, "type": "typography" }
+    },
+    "body": {
+      "large":  { "value": { "fontSize": "{typography.fontSize.lg}", "fontWeight": "{typography.fontWeight.regular}", "lineHeight": "{typography.lineHeight.loose}"  }, "type": "typography" },
+      "medium": { "value": { "fontSize": "{typography.fontSize.md}", "fontWeight": "{typography.fontWeight.regular}", "lineHeight": "{typography.lineHeight.normal}" }, "type": "typography" },
+      "small":  { "value": { "fontSize": "{typography.fontSize.sm}", "fontWeight": "{typography.fontWeight.regular}", "lineHeight": "{typography.lineHeight.normal}" }, "type": "typography" }
+    }
+  },
+  "component": {
+    "button": {
+      "minHeight":    { "value": 72,  "type": "sizing", "comment": "시니어 UX: 최소 터치 타겟 72px" },
+      "borderRadius": { "value": "{borderRadius.lg}", "type": "borderRadius" },
+      "paddingH":     { "value": "{spacing.6}", "type": "spacing" }
+    },
+    "input": {
+      "height":       { "value": 56,  "type": "sizing" },
+      "borderRadius": { "value": "{borderRadius.md}", "type": "borderRadius" }
+    },
+    "card": {
+      "padding":      { "value": "{spacing.4}", "type": "spacing" },
+      "borderRadius": { "value": "{borderRadius.lg}", "type": "borderRadius" }
+    }
+  }
+}

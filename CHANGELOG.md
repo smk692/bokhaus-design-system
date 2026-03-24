@@ -42,7 +42,7 @@
   - Skeleton: width 타입 캐스팅
 
 ### Summary
-**전체 21개 컴포넌트 + 38 Storybook stories + 5개 BOKHAUS 화면 통합**
+**전체 15개 컴포넌트 + 38 Storybook stories + 5개 BOKHAUS 화면 통합**
 
 - **Phase 1**: 리서치 ✅
 - **Phase 2**: Figma Tokens ✅
