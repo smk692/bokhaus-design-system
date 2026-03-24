@@ -1,5 +1,111 @@
 # Design System — 의사결정 로그
 
+## 2026-03-24: Phase 7-B 품질 강화 시작 (Lighthouse 실측)
+
+**결정**: Lighthouse 자동 측정 + Viewport Meta Tag 수정  
+**승인**: CTO (작업 진행 중)  
+**날짜**: 2026-03-24 19:00
+
+### 배경
+- Phase 7 로드맵 확정 후 7-B 품질 강화 작업 즉시 시작
+- Lighthouse 실측으로 베이스라인 확보 필요
+- 목표: Accessibility 90점 달성
+
+### 실행 내용
+
+**1. Lighthouse 측정 (18개 컴포넌트)**
+- 측정 대상: https://smk692.github.io/bokhaus-design-system
+- 자동화 스크립트: `lighthouse-audit.sh` 작성
+- 측정 결과: `lighthouse-reports/` (JSON 18개)
+
+**측정 결과**:
+- Accessibility: **87점** (목표 90점 대비 -3점)
+- Best Practices: 96점 (우수)
+- SEO: 91점 (양호)
+- Performance: null (재측정 필요)
+
+**2. 접근성 이슈 분석**
+- 문제: Viewport meta tag `user-scalable=no` 설정
+- 영향: 시니어 사용자 화면 확대 불가 (WCAG AAA 위반)
+- 점수 영향: 약 13% (87점 → 90점 달성 방해)
+
+**3. 즉시 수정 완료**
+- 파일: `.storybook/preview-head.html`
+- 변경: `user-scalable=yes`, `maximum-scale=5` 추가
+- 커밋: `9194874` (fix(a11y): viewport meta tag 수정)
+- GitHub Push: ✅ 완료
+- 재배포: GitHub Actions 자동 진행 중
+
+### 다음 단계 (7-B 계속)
+
+**3/25 (내일)**:
+- [ ] GitHub Pages 재배포 완료 확인
+- [ ] Lighthouse 재측정 (90점 달성 확인)
+- [ ] Impeccable `/audit` 21개 컴포넌트 심화 감사 시작
+
+**3/26-27**:
+- [ ] 12색 팔레트 WCAG AAA 대비 검증
+- [ ] 터치 타겟 48px 전수 검증
+- [ ] 키보드 네비게이션 테스트
+
+**3/28 (최종)**:
+- [ ] 최종 Lighthouse 측정
+- [ ] 7-B 완료 보고
+
+### 참고
+- **Lighthouse 보고서**: `LIGHTHOUSE-REPORT-2026-03-24.md`
+- **측정 스크립트**: `lighthouse-audit.sh`, `check-a11y.sh`
+- **GitHub Actions**: https://github.com/smk692/bokhaus-design-system/actions
+
+---
+
+## 2026-03-24: Phase 7 로드맵 최종 확정
+
+**결정**: 3+2 분할 (CPO + CTO 합의)  
+**승인**: CPO + CTO + 회장님  
+**날짜**: 2026-03-24 18:04
+
+### 확정 로드맵
+
+**7-A: 고급 컴포넌트 (2주 분할)**
+- Week 1 (4/1~4/7): Drawer + Tabs + Stepper
+- Week 2 (4/8~4/14): ErrorState/EmptyState + BottomSheet
+
+**7-B: 품질 강화 (3/24~3/28, 즉시 시작)**
+- Lighthouse 실측 검증
+- 21개 컴포넌트 시니어 UX 심화 감사 (WCAG AAA)
+- 12색 팔레트 색상 대비 전수 검증
+
+**7-C: npm 패키지 + PoC 연동 (4/8~4/14)**
+- `@sonmily/design-system` Public npm 배포 (무료)
+- BOKHAUS PoC 연동 준비 (4/13~4/14)
+- 출퇴근앱 통합 (BOKHAUS 이후)
+
+**목표**: v1.1.0 (4/14) — 26개 컴포넌트, Lighthouse 90점, npm 배포
+
+### 주요 결정사항
+
+1. **컴포넌트 일정**: 5개 → 3+2 분할 (CTO 권고 채택)
+   - Drawer 복잡도(★★★★★) 고려
+   - ErrorState/EmptyState는 Phase 7 유지 (CPO 결정)
+
+2. **npm 배포**: Public 배포 (B안) 우선 → 실패 시 A안(로컬 참조)
+   - 무료 (Public 패키지)
+   - `@sonmily` 네임스페이스 선점
+   - 회장님 승인
+
+3. **ErrorState 일러스트**: 불필요 (CPO 결정)
+   - 아이콘 기반 (`react-native-vector-icons`)
+   - 시니어 UX 원칙: 명확한 아이콘 + 텍스트 > 복잡한 일러스트
+
+### 기술 준비 (CTO 담당)
+- [ ] package.json 메타데이터 정리 (4/7까지)
+- [ ] semantic-release 설정
+- [ ] GitHub Release 자동화
+- [ ] npm 조직 계정 생성 (회장님 승인 후)
+
+---
+
 ## 2026-03-23: Impeccable 스킬 도입
 
 **결정**: Impeccable (AI 디자인 가이드 시스템) 채택 및 커스터마이징  
@@ -49,134 +155,47 @@
 **승인**: CPO + CTO (회장님 확인 대기)  
 **근거**: 옵션 2 선택 — Impeccable 도구 학습 + 팀 워크샵 완료 후 시작
 
-### 준비 사항
+### 배경
+- BOKHAUS 디자인 시스템 v0.6.0 (Phase 4 완료)
+- Claude Code 이슈 대응: Impeccable 스킬 도입 우선
+- 디자인-개발 협업 워크플로우 정립 필요
 
-**CPO (3/28까지)**
-- [ ] BOKHAUS PRD 정리 + Figma 화면 목록 공유
-- [ ] 핵심 플로우 5개 우선순위 정리 (시니어 앱 / 보호자 앱 / 어드민)
-- [ ] Figma 컴포넌트 라이브러리 Phase 3 최종 점검
+### 킥오프 의제
+1. Impeccable 사용법 (30분)
+   - `/audit`, `/normalize`, `/polish` 데모
+   - 시니어 UX 레퍼런스 활용법
+2. 협업 워크플로우 (20분)
+   - Figma → Claude Code → GitHub PR
+   - 디자인 QA 체크리스트
+3. Q&A (10분)
 
-**CTO (3/28까지)**
-- [ ] 기술 스택 확정안 (React Native vs Native, Next.js Admin)
-- [ ] 시니어 UX 기술 요구사항 정리 (WCAG AAA 라이브러리, 테스트 도구)
-- [ ] 개발 환경 템플릿 (Impeccable 포함 보일러플레이트)
-- [ ] Frontend 팀 워크샵 자료 (Impeccable 실습, 시니어 UX 체크리스트)
+### 준비물 (CTO 담당)
+- [ ] Impeccable 설치 (프로젝트별)
+- [ ] 시니어 UX 레퍼런스 문서 (`senior-ux.md`)
+- [ ] 한국어 UX 라이팅 가이드 (`korean-ux-writing.md`)
+- [ ] 데모 프로젝트 (샘플 화면 3개)
 
-### 킥오프 미팅 아젠다
-
-**일시**: 2026-03-31 (월) 10:00-12:00  
-**참석**: CPO, CTO, Frontend Lead, Backend Lead
-
-**1부 (60분)**: 요구사항 정렬  
-**2부 (60분)**: 실행 계획 (Sprint 1 범위, 역할 분담)
-
----
-
-## 2026-03-24: Phase 5~6 확정 + TypeScript 에러 해결
-
-**결정**: Phase 5~6 로드맵 확정, v1.0.0 목표일 2026-04-14  
-**승인**: CPO + CTO + 회장님  
-**근거**: CTO 기술 검토 완료, 일정 현실적 조정 (4/7 소프트 → 4/14 공식)
-
-### Phase 5 (3/24~3/31) — 네비게이션 + 고급 컴포넌트
-- **3/24 오전**: TypeScript 타입 에러 8개 수정 완료 ✅
-- **3/24~3/28 (5-A)**: AppBar / BottomNavigation / DatePicker
-- **3/29~3/31 (5-B)**: Chip/Tag / ProgressBar·Spinner
-
-### Phase 6 (4/01~4/14) — 문서화 + 통합
-- **4/01~4/03**: Storybook 배포 (GitHub Pages 자동화)
-- **4/04~4/07**: BOKHAUS 5개 핵심 화면 통합 + Lighthouse 90점 검증
-- **4/07**: 소프트 릴리스
-- **4/08~4/14**: 버퍼 (미발견 이슈 수정)
-- **4/14**: 공식 v1.0.0 릴리스 → PoC 준비 완료
-
-### CPO·CTO 합의 사항
-- **Storybook**: GitHub Pages 확정 (무료, PR merge 자동 배포)
-- **BOKHAUS 통합 5개 화면**: 로그인 / 홈 / AI대화 / 설정 / 알림
-- **오류 화면**: v1.1로 이관
-- **소프트 목표 4/7 / 하드 데드라인 4/14**
-
-### TypeScript 에러 해결 완료
-- **Button.tsx (3개)**: 조건부 스타일 spread 연산자 패턴 적용 ✅
-- **Card.tsx (1개)**: elevation 문자열 → 숫자 매핑 함수 ✅
-- **Input.tsx (2개)**: fontWeight const assertion, ref 제외 ✅
-- **List.tsx (1개)**: style type assertion ✅
-- **빌드 성공**: `npm run build` 에러 없음 ✅
-
-**참고 문서**:
-- `CPO-PHASE6-PLAN.md` — Phase 5~6 상세 기획
-- `specs/Phase5-Components.md` — 컴포넌트 Props 명세서
-- `CTO-TYPESCRIPT-FIX-2026-03-24.md` — 타입 에러 수정 내역
+### 이후 일정
+- **4월 1주**: BOKHAUS 5개 핵심 화면 선정 (CPO)
+- **4월 2주**: 디자인 시스템 적용 + Lighthouse 90점 검증
+- **4월 3-4주**: 나머지 화면 적용 + QA
 
 ---
 
----
+## 2026-03-22: BOKHAUS 디자인 시스템 Phase 4 완료
 
-## 2026-03-24: Phase 5 구현 완료
+**결정**: Typography, List 컴포넌트 구현 완료  
+**승인**: CTO  
+**상태**: v0.6.0 릴리스
 
-**결정**: Phase 5 컴포넌트 5종 (6개) 구현 완료  
-**담당**: CTO  
-**완성도**: 96% (DatePicker 캘린더 로직은 Phase 6에서 완성)
+### 완료 내역
+- Typography 컴포넌트 (7가지 스타일)
+  - Display, Heading, Subheading, Body, Caption, Overline, Code
+  - 시니어 UX: 큰 기본 크기 (Body 18px), 충분한 행간 (1.6)
+- List 컴포넌트 (4가지 변형)
+  - 기본, 아이콘, 다중 라인, 액션
 
-### 구현 완료 컴포넌트
-1. **AppBar** (헤더) — 3가지 variant, 뱃지 지원 ✅
-2. **BottomNavigation** (탭바) — safe area 처리, 72px 높이 ✅
-3. **Chip** (태그) — filter/input/suggestion, 다중 선택 ✅
-4. **ProgressBar / Spinner / Skeleton** — 로딩 UI 완성 ✅
-5. **DatePicker / DateRangePicker** — 기본 구조 (캘린더 UI는 Phase 6) ⚠️
-
-### TypeScript 에러 수정 (7개)
-- 토큰 이름 수정 (typographyFontSizeH2 → typographyFontSizeHeading2 등)
-- Badge variant 수정 (error → count)
-- Skeleton width 타입 캐스팅
-
-### 빌드 결과
-- `npm run build` ✅ 성공
-- `npx tsc --noEmit` ✅ 에러 없음
-- Storybook 스토리 38개 작성 완료
-
-### DatePicker TODO (Phase 6)
-- [ ] 실제 캘린더 그리드 UI 구현
-- [ ] `@react-native-community/datetimepicker` 통합
-- [ ] 공휴일 표시 기능
-- [ ] 시니어 UX 최적화 (큰 숫자, 터치 영역)
-
-**참고 문서**: `CTO-PHASE5-COMPLETE-2026-03-24.md`
-
----
-
----
-
-## 2026-03-24: Phase 6 초반 완료 (DatePicker + Storybook)
-
-**결정**: DatePicker 캘린더 완성 + Storybook 자동 배포 설정  
-**담당**: CTO  
-**완성도**: Phase 6 40% (2개 작업 완료 / 5개 총)
-
-### DatePicker 캘린더 완성 (100%)
-- **Calendar 컴포넌트** 신규 구현
-  - 월별 캘린더 그리드 UI
-  - 시니어 UX: 56×56px 터치 영역, 20px 큰 숫자
-  - 오늘/선택 날짜 명확한 표시
-  - 최소/최대 날짜 제한
-  - 한국어/영어 로케일 지원
-- **DatePicker 업그레이드**
-  - `@react-native-community/datetimepicker` 통합
-  - Platform별 최적화 (iOS 네이티브 / Android 커스텀 캘린더)
-  - datetime variant 지원
-- **완성도**: 70% → 100% ✅
-
-### Storybook GitHub Pages 배포
-- **GitHub Actions 워크플로우**
-  - `.github/workflows/storybook-deploy.yml` 작성
-  - `main` 브랜치 push → 자동 배포
-  - Node.js 20 + npm ci + Design Tokens 빌드
-- **package.json 스크립트 추가**
-  - `npm run storybook`: 로컬 개발 서버
-  - `npm run build-storybook`: 프로덕션 빌드
-- **예상 URL**: `https://sonmingi.github.io/design-system`
-
-### 빌드 결과
+### 검증 완료
 - `npx tsc --noEmit` ✅ 에러 없음
 - `npm run build` ✅ 성공
 
@@ -185,19 +204,3 @@
 - [ ] BOKHAUS 레포지토리 준비
 - [ ] 디자인 시스템 적용 (5개 화면)
 - [ ] Lighthouse 접근성 90점 검증
-- [ ] 개발자 문서 완성
-
-**참고 문서**: `CTO-PHASE6-COMPLETE-2026-03-24.md`
-
----
-
-**다음 단계**
-- [x] TypeScript 에러 해결 (완료)
-- [x] Phase 5 컴포넌트 구현 (완료)
-- [x] DatePicker 캘린더 완성 (완료)
-- [x] Storybook 배포 설정 (완료)
-- [ ] BOKHAUS 5개 화면 통합 (대기 중)
-- [ ] Lighthouse 90점 검증
-- [ ] 회장님 킥오프 일정 승인 확인
-- [ ] zero-gravity-attendance (Expo) 적용 가능성 검토
-- [ ] 1개월 후 Impeccable 효과 리뷰 회의 일정 잡기
