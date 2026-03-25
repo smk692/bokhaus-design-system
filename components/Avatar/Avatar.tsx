@@ -32,6 +32,20 @@ export interface AvatarProps {
   icon?: string;
 
   /**
+   * 접근성 레이블 (스크린리더용)
+   * 미설정 시 name 기반 자동 생성
+   * 예: "홍길동 프로필 사진"
+   */
+  accessibilityLabel?: string;
+
+  /**
+   * 터치 가능 여부 (accessibilityRole 결정)
+   * true → "button", false → "image"
+   * @default false
+   */
+  touchable?: boolean;
+
+  /**
    * 아바타 크기
    * - small: 32px
    * - medium: 48px (기본)
@@ -89,10 +103,23 @@ export const Avatar: React.FC<AvatarProps> = ({
   showStatus = false,
   isOnline = false,
   style,
+  accessibilityLabel: accessibilityLabelProp,
+  touchable = false,
 }) => {
   const pixelSize = SIZE_MAP[size];
   const bgColor = backgroundColor || customColors.colorPrimaryDefault;
   const statusSize = Math.max(10, pixelSize * 0.22);
+
+  // WCAG 1.1.1: 이미지 대체 텍스트 자동 생성
+  const defaultLabel = name ? `${name} 프로필 사진` : '프로필 사진';
+  const a11yLabel = accessibilityLabelProp || defaultLabel;
+  // 터치 가능 여부에 따라 역할 결정
+  const a11yRole = touchable ? 'button' : 'image';
+  // 온라인 상태도 스크린리더에 전달
+  const a11yState = showStatus ? { selected: isOnline } : undefined;
+  const statusHint = showStatus
+    ? (isOnline ? '온라인 상태' : '오프라인 상태')
+    : undefined;
 
   const renderAvatar = () => {
     // 1순위: 이미지
@@ -130,7 +157,14 @@ export const Avatar: React.FC<AvatarProps> = ({
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View
+      style={styles.wrapper}
+      // WCAG 1.1.1 / 4.1.2: 접근성 속성
+      accessibilityLabel={a11yLabel}
+      accessibilityRole={a11yRole}
+      accessibilityState={a11yState}
+      accessibilityHint={statusHint}
+    >
       {renderAvatar()}
 
       {/* 온라인 상태 뱃지 */}
@@ -149,6 +183,9 @@ export const Avatar: React.FC<AvatarProps> = ({
               bottom: 0,
             },
           ]}
+          // 시각적 상태 뱃지는 부모 View에서 이미 처리하므로 hidden
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no"
         />
       )}
     </View>

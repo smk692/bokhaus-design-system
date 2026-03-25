@@ -97,6 +97,18 @@ export const Badge: React.FC<BadgeProps> = ({
     return count > maxCount ? `${maxCount}+` : String(count);
   })();
 
+  // WCAG 1.3.1: 스크린리더용 접근성 레이블 생성
+  const getA11yLabel = (): string => {
+    if (variant === 'count' && count !== undefined) {
+      if (count === 0) return '알림 없음';
+      return count > maxCount ? `${maxCount}개 이상의 알림` : `${count}개 알림`;
+    }
+    if (variant === 'dot') return '새 알림 있음';
+    if (variant === 'label' && label) return label;
+    return '';
+  };
+  const a11yLabel = getA11yLabel();
+
   // children 없이 단독 사용 (인라인 뱃지)
   if (!children) {
     if (!shouldShow) return null;
@@ -109,13 +121,19 @@ export const Badge: React.FC<BadgeProps> = ({
             { backgroundColor: badgeColor },
             style,
           ]}
+          accessibilityLabel={a11yLabel}
+          accessibilityRole="text"
         />
       );
     }
 
     if (variant === 'label' && label) {
       return (
-        <View style={[styles.labelBadge, { backgroundColor: badgeColor }, style]}>
+        <View
+          style={[styles.labelBadge, { backgroundColor: badgeColor }, style]}
+          accessibilityLabel={a11yLabel}
+          accessibilityRole="text"
+        >
           <Typography
             variant="caption"
             style={{ color: customColors.colorNeutralWhite, fontSize: 11, fontWeight: '600' }}
@@ -132,6 +150,7 @@ export const Badge: React.FC<BadgeProps> = ({
         visible={shouldShow}
         size={20}
         style={[styles.badge, { backgroundColor: badgeColor }, style]}
+        accessibilityLabel={a11yLabel}
       >
         {countText}
       </PaperBadge>
@@ -139,6 +158,7 @@ export const Badge: React.FC<BadgeProps> = ({
   }
 
   // children 위에 오버레이
+  // WCAG 1.3.1: children + badge 조합 시 부모에 통합 레이블 전달
   return (
     <View style={styles.wrapper}>
       {children}
@@ -150,9 +170,16 @@ export const Badge: React.FC<BadgeProps> = ({
               styles.overlayDot,
               { backgroundColor: badgeColor },
             ]}
+            // 뱃지 정보를 스크린리더에 알림 (children과 분리)
+            accessibilityLabel={a11yLabel}
+            accessibilityRole="text"
           />
         ) : variant === 'label' && label ? (
-          <View style={[styles.labelBadge, styles.overlayLabel, { backgroundColor: badgeColor }]}>
+          <View
+            style={[styles.labelBadge, styles.overlayLabel, { backgroundColor: badgeColor }]}
+            accessibilityLabel={a11yLabel}
+            accessibilityRole="text"
+          >
             <Typography
               variant="caption"
               style={{ color: customColors.colorNeutralWhite, fontSize: 11, fontWeight: '600' }}
@@ -165,6 +192,7 @@ export const Badge: React.FC<BadgeProps> = ({
             visible={shouldShow}
             size={20}
             style={[styles.badge, styles.overlayBadge, { backgroundColor: badgeColor }]}
+            accessibilityLabel={a11yLabel}
           >
             {countText}
           </PaperBadge>
