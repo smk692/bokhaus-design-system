@@ -5,7 +5,7 @@
       "100": { "value": "#C8E6C9", "type": "color" },
       "300": { "value": "#81C784", "type": "color" },
       "500": { "value": "#4CAF50", "type": "color" },
-      "700": { "value": "#388E3C", "type": "color" },
+      "700": { "value": "#2E7D32", "type": "color" },
       "900": { "value": "#1B5E20", "type": "color" }
     },
     "neutral": {
@@ -18,10 +18,14 @@
       "800": { "value": "#424242", "type": "color" },
       "900": { "value": "#212121", "type": "color" }
     },
-    "error":   { "value": "#F44336", "type": "color" },
-    "warning": { "value": "#FF9800", "type": "color" },
-    "success": { "value": "#4CAF50", "type": "color" },
-    "info":    { "value": "#2196F3", "type": "color" }
+    "error":   { "value": "#C62828", "type": "color" },
+    "warning": {
+      "background": { "value": "#FFF8E1", "type": "color" },
+      "text":       { "value": "#5D4037", "type": "color" },
+      "icon":       { "value": "#FF9800", "type": "color" }
+    },
+    "success": { "value": "#2E7D32", "type": "color" },
+    "info":    { "value": "#1565C0", "type": "color" }
   },
   "typography": {
     "fontFamily": {

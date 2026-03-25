@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View, AccessibilityInfo } from 'react-native';
 import { Snackbar, SnackbarProps } from 'react-native-paper';
 import { customColors, customTypography } from '../../build/react-native/theme';
 
@@ -72,6 +72,11 @@ export const Toast: React.FC<ToastProps> = ({
   // 아이콘 (CPO 요구사항: 아이콘 + 텍스트 병행)
   const icon = getToastIcon(type);
   
+  // 접근성: 에러는 assertive(즉시), 나머지는 polite(대기)
+  const liveRegion = type === 'error' ? 'assertive' : 'polite';
+  // 접근성: 스크린리더용 레이블 (아이콘 제외)
+  const a11yLabel = `${getToastTypeLabel(type)}: ${message}`;
+
   return (
     <Snackbar
       visible={visible}
@@ -83,6 +88,10 @@ export const Toast: React.FC<ToastProps> = ({
       } : undefined}
       style={[styles.toast, toastStyle, style]}
       wrapperStyle={styles.wrapper}
+      // WCAG 4.1.3: 상태 메시지는 스크린리더에 자동 전달
+      accessibilityRole="alert"
+      accessibilityLiveRegion={liveRegion}
+      accessibilityLabel={a11yLabel}
       {...props}
     >
       {`${icon} ${message}`}
@@ -101,6 +110,16 @@ function getToastStyle(type: ToastType) {
       return { backgroundColor: customColors.colorWarningDefault }; // #E65100
     case 'info':
       return { backgroundColor: customColors.colorPrimaryDefault }; // #1565C0
+  }
+}
+
+// 타입별 스크린리더 레이블 (접근성)
+function getToastTypeLabel(type: ToastType): string {
+  switch (type) {
+    case 'success': return '성공';
+    case 'error':   return '오류';
+    case 'warning': return '경고';
+    case 'info':    return '알림';
   }
 }
 

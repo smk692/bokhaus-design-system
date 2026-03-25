@@ -146,7 +146,7 @@ export const Chip: React.FC<ChipProps> = ({
 
 const styles = StyleSheet.create({
   chip: {
-    minHeight: 44, // 시니어 UX: 44px 최소 높이 (WCAG AA)
+    minHeight: 44, // WCAG 2.5.5 AA 준수: 44px 최소 터치 영역 (시니어 권장 48px)
     borderWidth: 1,
     borderRadius: 22,
     marginRight: 8,
